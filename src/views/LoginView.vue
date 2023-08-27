@@ -5,7 +5,8 @@ import BasicLayout from '../layout/BasicLayout.vue'
 <template>
   <main>
     <BasicLayout>
-      <h3>ostia</h3>
+      <h3>login</h3>
+      <router-link to="/login">login </router-link>
     </BasicLayout>
   </main>
 </template>
