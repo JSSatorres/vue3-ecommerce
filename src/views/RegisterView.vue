@@ -17,8 +17,10 @@ const register = async () => {
 
   try {
     await schemaRegisterForm.validate(formData.value, { abortEarly: false })
+    const payload = { data: { ...formData } }
+    console.log(payload)
     try {
-      const response = await registerApi(formData.value)
+      const response = await registerApi(payload)
       // const result = response.json()
       console.log(response)
       // router.push('/login')
