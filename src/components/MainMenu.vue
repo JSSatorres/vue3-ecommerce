@@ -1,10 +1,20 @@
 <script setup>
-// import WelcomeItem from './WelcomeItem.vue'
-// import DocumentationIcon from './icons/IconDocumentation.vue'
-// import ToolingIcon from './icons/IconTooling.vue'
-// import EcosystemIcon from './icons/IconEcosystem.vue'
-// import CommunityIcon from './icons/IconCommunity.vue'
-// import SupportIcon from './icons/IconSupport.vue'
+import { getTokenApi, deleteTokenApi } from '../api/token'
+import { getCategoriesApi } from '../api/category'
+import { ref, onMounted } from 'vue'
+
+const token = getTokenApi()
+const categories = ref()
+const logout = () => {
+  deleteTokenApi()
+  location.replace('/')
+}
+
+onMounted(async () => {
+  const response = await getCategoriesApi()
+  categories.value = response.data
+  console.log(categories.value)
+})
 </script>
 
 <template>
@@ -13,11 +23,14 @@
       <div class="left menu">
         <router-link class="item" to="/">
           <img class="ui small image" src="../assets/logo.png" alt="Ecommerce" />
-          <template v-for="category in categories" :key="category.id">
-            <router-link class="item" :to="category.slug">
-              {{ category.title }}
-            </router-link>
-          </template>
+          <router-link
+            v-for="category in categories"
+            class="item"
+            :key="category?.attributes?.id"
+            :to="category?.attributes?.slug"
+          >
+            {{ category?.attributes?.title }}
+          </router-link>
         </router-link>
       </div>
 
