@@ -32,6 +32,10 @@ onMounted(async () => {
           :key="category?.attributes?.id"
           :to="`/category/${category?.attributes?.slug}`"
         >
+          <!-- :to="{
+            name: 'category',
+            params: { slug: category?.attributes?.slug }
+          }" -->
           {{ category?.attributes?.title }}
         </router-link>
       </div>
