@@ -2,6 +2,7 @@
 import { getTokenApi, deleteTokenApi } from '../api/token'
 import { getCategoriesApi } from '../api/category'
 import { ref, onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const token = getTokenApi()
 const categories = ref()
@@ -12,8 +13,8 @@ const logout = () => {
 
 onMounted(async () => {
   const response = await getCategoriesApi()
-  categories.value = response.data
-  console.log(categories.value)
+  categories.value = response?.data
+  console.log(categories?.value)
 })
 </script>
 
@@ -23,14 +24,15 @@ onMounted(async () => {
       <div class="left menu">
         <router-link class="item" to="/">
           <img class="ui small image" src="../assets/logo.png" alt="Ecommerce" />
-          <router-link
-            v-for="category in categories"
-            class="item"
-            :key="category?.attributes?.id"
-            :to="category?.attributes?.slug"
-          >
-            {{ category?.attributes?.title }}
-          </router-link>
+        </router-link>
+
+        <router-link
+          v-for="category in categories"
+          class="item"
+          :key="category?.attributes?.id"
+          :to="`/category/${category?.attributes?.slug}`"
+        >
+          {{ category?.attributes?.title }}
         </router-link>
       </div>
 
