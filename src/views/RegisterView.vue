@@ -1,14 +1,20 @@
 <script setup>
 import BasicLayout from '../layout/BasicLayout.vue'
 import { schemaRegisterForm } from '../utils/yup'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { registerApi } from '../api/user'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { getTokenApi, setTokenApi } from '../api/token'
 
 let formData = ref({})
 let formError = ref({})
 let loading = ref(false)
-// const router = useRouter()
+const router = useRouter()
+const token = getTokenApi()
+
+onMounted(() => {
+  if (token) router.push('/')
+})
 
 const register = async () => {
   console.log(formData.value)
@@ -17,13 +23,18 @@ const register = async () => {
 
   try {
     await schemaRegisterForm.validate(formData.value, { abortEarly: false })
-    const payload = { data: { ...formData } }
+    console.log(formData.value)
+    const payload = {
+      userName: formData.value.username,
+      email: formData.value.email,
+      password: formData.value.password
+    }
     console.log(payload)
     try {
       const response = await registerApi(payload)
-      // const result = response.json()
-      console.log(response)
-      // router.push('/login')
+      if (!response?.jwt) throw 'data are not correct'
+      setTokenApi(response?.jwt)
+      router.push('/')
     } catch (error) {
       console.log(error)
     }
@@ -40,12 +51,12 @@ const register = async () => {
 <template>
   <BasicLayout>
     <div class="register">
-      <h2>Registro de usuario</h2>
+      <h2>Register</h2>
       <form class="ui form" @submit.prevent="register">
         <div class="field">
           <input
             type="text"
-            placeholder="Nombre de usuario"
+            placeholder="User name"
             v-model="formData.username"
             :class="{ error: formError.username }"
           />
@@ -54,24 +65,27 @@ const register = async () => {
         <div class="field">
           <input
             type="text"
-            placeholder="Correo electronico"
+            placeholder="Email"
             v-model="formData.email"
             :class="{ error: formError.email }"
           />
         </div>
         <div class="field">
-          <input type="password" placeholder="Contraseña" v-model="formData.password" />
-          <p v-if="formError?.email?.message" class="error-message">
-            {{ formError?.email?.message }}
+          <input
+            type="password"
+            placeholder="Password"
+            v-model="formData.password"
+            :class="{ error: formError.password }"
+          />
+          <p v-if="formError?.password?.message" class="error-message">
+            {{ formError?.password?.message }}
           </p>
         </div>
 
-        <button type="submit" class="ui button fluid primary" :class="{ loading }">
-          Crear usuario
-        </button>
+        <button type="submit" class="ui button fluid primary" :class="{ loading }">Register</button>
       </form>
 
-      <router-link to="/login"> Iniciar sesión </router-link>
+      <router-link to="/login"> Login </router-link>
     </div>
   </BasicLayout>
 </template>
