@@ -38,7 +38,7 @@ console.log(route.params.variant)
 <template>
   <main>
     <BasicLayout>
-      <h3>Category {{ route.params.variant }}</h3>
+      <h3>Category {{ route.params.slug }}</h3>
     </BasicLayout>
   </main>
 </template>
