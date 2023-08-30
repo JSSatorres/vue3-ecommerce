@@ -17,7 +17,7 @@ const router = createRouter({
     {
       path: '/register',
       name: 'register',
-      ccomponent: () => import('../views/RegisterView.vue')
+      component: () => import('../views/RegisterView.vue')
     },
     {
       path: '/orders',
@@ -29,7 +29,7 @@ const router = createRouter({
     //   component:()=> import('../views/LoginView.vue')
     // },
     {
-      path: '/category/:variant',
+      path: '/category/:slug',
       component: () => import('../views/CategoryView.vue')
     }
   ]
