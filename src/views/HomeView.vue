@@ -7,9 +7,8 @@ import { getProductsApi } from '../api/products'
 let products = ref(null)
 
 onMounted(async () => {
-  const response = await getProductsApi(2)
-  products.value = response
-  console.log('dfdsfsdefdsferefrerfreeeeeeeeeeeeeeeeee', products.value)
+  const response = await getProductsApi()
+  products.value = response.data
 })
 </script>
 
